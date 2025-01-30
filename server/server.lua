@@ -25,3 +25,15 @@ AddEventHandler("Lum-core:removeMoney", function(amount)
     local src = source
     Framework.RemoveMoney(src, amount)
 end)
+
+RegisterNetEvent("Lum-core:spawnVehicle")
+AddEventHandler("Lum-core:spawnVehicle", function(model)
+    local src = source
+    Framework.SpawnVehicle(src, model)
+end)
+
+RegisterNetEvent("Lum-core:notify")
+AddEventHandler("Lum-core:notify", function(message)
+    local src = source
+    Framework.Notify(src, message)
+end)

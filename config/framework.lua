@@ -12,22 +12,18 @@ if Config.Framework == "ESX" then
     function Framework.AddMoney(source, amount)
         local player = ESX.GetPlayerFromId(source)
         if player then player.addMoney(amount) end
+        Framework.LogTransaction(source, "add_money", amount)
     end
     function Framework.RemoveMoney(source, amount)
         local player = ESX.GetPlayerFromId(source)
         if player then player.removeMoney(amount) end
+        Framework.LogTransaction(source, "remove_money", amount)
     end
-    function Framework.HasPermission(source, perm)
-        local player = ESX.GetPlayerFromId(source)
-        return player and player.getGroup() == perm
+    function Framework.SpawnVehicle(source, model)
+        TriggerClientEvent("Lum-core:spawnVehicle", source, model)
     end
-    function Framework.AddItem(source, item, count)
-        local player = ESX.GetPlayerFromId(source)
-        if player then player.addInventoryItem(item, count) end
-    end
-    function Framework.RemoveItem(source, item, count)
-        local player = ESX.GetPlayerFromId(source)
-        if player then player.removeInventoryItem(item, count) end
+    function Framework.Notify(source, message)
+        TriggerClientEvent("esx:showNotification", source, message)
     end
 elseif Config.Framework == "QBCore" then
     QBCore = exports["qb-core"]:GetCoreObject()
@@ -41,32 +37,25 @@ elseif Config.Framework == "QBCore" then
     function Framework.AddMoney(source, amount)
         local player = QBCore.Functions.GetPlayer(source)
         if player then player.Functions.AddMoney("cash", amount) end
+        Framework.LogTransaction(source, "add_money", amount)
     end
     function Framework.RemoveMoney(source, amount)
         local player = QBCore.Functions.GetPlayer(source)
         if player then player.Functions.RemoveMoney("cash", amount) end
+        Framework.LogTransaction(source, "remove_money", amount)
     end
-    function Framework.HasPermission(source, perm)
-        local player = QBCore.Functions.GetPlayer(source)
-        return player and player.PlayerData.job.name == perm
+    function Framework.SpawnVehicle(source, model)
+        TriggerClientEvent("Lum-core:spawnVehicle", source, model)
     end
-    function Framework.AddItem(source, item, count)
-        local player = QBCore.Functions.GetPlayer(source)
-        if player then player.Functions.AddItem(item, count) end
-    end
-    function Framework.RemoveItem(source, item, count)
-        local player = QBCore.Functions.GetPlayer(source)
-        if player then player.Functions.RemoveItem(item, count) end
+    function Framework.Notify(source, message)
+        TriggerClientEvent("QBCore:Notify", source, message)
     end
 elseif Config.Framework == "vRP" then
     local vRP = Proxy.getInterface("vRP")
     local vRPclient = Tunnel.getInterface("vRP", "Lum-core")
     function Framework.GetPlayer(source)
         local user_id = vRP.getUserId({source})
-        if user_id then
-            return { user_id = user_id, source = source }
-        end
-        return nil
+        return { user_id = user_id, source = source }
     end
     function Framework.GetMoney(source)
         local user_id = vRP.getUserId({source})
@@ -75,21 +64,27 @@ elseif Config.Framework == "vRP" then
     function Framework.AddMoney(source, amount)
         local user_id = vRP.getUserId({source})
         if user_id then vRP.giveMoney({user_id, amount}) end
+        Framework.LogTransaction(source, "add_money", amount)
     end
     function Framework.RemoveMoney(source, amount)
         local user_id = vRP.getUserId({source})
         if user_id then vRP.tryPayment({user_id, amount}) end
+        Framework.LogTransaction(source, "remove_money", amount)
     end
-    function Framework.HasPermission(source, perm)
-        local user_id = vRP.getUserId({source})
-        return user_id and vRP.hasPermission({user_id, perm})
+    function Framework.SpawnVehicle(source, model)
+        vRPclient.spawnVehicle(source, {model})
     end
-    function Framework.AddItem(source, item, count)
-        local user_id = vRP.getUserId({source})
-        if user_id then vRP.giveInventoryItem({user_id, item, count}) end
+    function Framework.Notify(source, message)
+        vRPclient.notify(source, {message})
     end
-    function Framework.RemoveItem(source, item, count)
-        local user_id = vRP.getUserId({source})
-        if user_id then vRP.tryGetInventoryItem({user_id, item, count}) end
+end
+
+function Framework.LogTransaction(source, action, amount)
+    local player = Framework.GetPlayer(source)
+    if player then
+        PerformHttpRequest(Config.Webhook, function() end, "POST", json.encode({
+            username = "Lum Core",
+            content = string.format("**%s** realizou a ação **%s** no valor de **$%d**", GetPlayerName(source), action, amount)
+        }), { ["Content-Type"] = "application/json" })
     end
 end
