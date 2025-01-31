@@ -81,3 +81,39 @@ document.getElementById('close-house-menu').addEventListener('click', () => {
         document.getElementById('house-menu').style.display = 'none';
     });
 });
+
+// ui/ui.js
+window.addEventListener('message', function(event) {
+    if (event.data.action === 'openVehicleMenu') {
+        document.getElementById('vehicle-menu').style.display = 'block';
+        const vehicleList = document.getElementById('vehicle-list');
+        vehicleList.innerHTML = '';
+        event.data.vehicles.forEach(vehicle => {
+            const li = document.createElement('li');
+            li.innerText = `${vehicle.model} - ${vehicle.plate}`;
+            li.addEventListener('click', () => {
+                fetch(`https://lum-core/spawnVehicle`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ plate: vehicle.plate })
+                }).then(resp => resp.json()).then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                    } else {
+                        alert(data.message);
+                    }
+                });
+            });
+            vehicleList.appendChild(li);
+        });
+    }
+});
+
+document.getElementById('close-vehicle-menu').addEventListener('click', () => {
+    fetch(`https://lum-core/closeVehicleMenu`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    }).then(() => {
+        document.getElementById('vehicle-menu').style.display = 'none';
+    });
+});
