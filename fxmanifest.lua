@@ -2,33 +2,31 @@ fx_version 'cerulean'
 game 'gta5'
 
 author 'andersonyt99'
-description 'Lum Core - Uma framework universal para FiveM'
+description 'Lum Core - Um framework universal para FiveM'
 version '1.0.0'
 
 client_scripts {
+    'client/cl_utils.lua',
+    'client/cl_framework_detection.lua',
     'client/cl_main.lua',
-    'client/modules/*.lua',
-    'client/lib/*.lua',
-    'ui/ui.lua'
+    'client/cl_ui.lua'
 }
 
 server_scripts {
+    'server/sv_framework_detection.lua',
     'server/sv_main.lua',
-    'server/modules/*.lua',
-    'server/lib/*.lua'
+    'server/sv_logs.lua',
+    'server/sv_config.lua'
 }
 
 shared_scripts {
-    'shared/config.lua',
-    'shared/modules/*.lua',
-    'shared/lib/*.lua',
-    'tunnel/tunnel.lua'
+    'config/config.lua'
 }
 
 ui_page 'ui/ui.html'
 
 files {
     'ui/ui.html',
-    'ui/style.css',
-    'ui/script.js'
+    'ui/ui.css',
+    'ui/ui.js'
 }
