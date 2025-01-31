@@ -460,3 +460,82 @@ local participationList = GlobalEvents.GetPlayerParticipation(playerId)
 for eventId, _ in pairs(participationList) do
     print(string.format('Jogador %d participou do evento %d.', playerId, eventId))
 end
+
+---Exemplo de Uso do Sistema de Comércio---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles, Achievements, GlobalEvents, Trade = Framework.init()
+
+-- Exemplo: Criar uma proposta de comércio
+local playerId = source -- ID do jogador
+local targetId = 2 -- ID do jogador alvo
+local offerItems = { { item = 'bread', amount = 2 } }
+local requestItems = { { item = 'water', amount = 1 } }
+local tradeId = Trade.CreateOffer(playerId, targetId, offerItems, requestItems)
+
+-- Exemplo: Aceitar uma proposta de comércio
+Trade.AcceptOffer(tradeId)
+
+-- Exemplo: Recusar uma proposta de comércio
+Trade.DeclineOffer(tradeId)
+
+---Exemplo de Uso do Sistema de Leilões---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles, Achievements, GlobalEvents, Trade, Auction = Framework.init()
+
+-- Exemplo: Criar um leilão
+local playerId = source -- ID do jogador
+local auctionId = Auction.CreateAuction(playerId, 'bread', 2, 100)
+
+-- Exemplo: Dar lance em um leilão
+local bidderId = 2 -- ID do jogador que está dando o lance
+Auction.PlaceBid(bidderId, auctionId, 150)
+
+-- Exemplo: Finalizar um leilão
+Auction.EndAuction(auctionId)
+
+
+---Exemplo de Uso do Sistema de Propriedades---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles, Achievements, GlobalEvents, Trade, Auction, Properties = Framework.init()
+
+-- Exemplo: Criar uma propriedade
+Properties.CreateProperty(1, { name = 'Casa na Praia', price = 50000 })
+
+-- Exemplo: Comprar uma propriedade
+local playerId = source -- ID do jogador
+Properties.BuyProperty(playerId, 1)
+
+-- Exemplo: Vender uma propriedade
+Properties.SellProperty(playerId, 1)
+
+-- Exemplo: Obter as propriedades de um jogador
+local playerProperties = Properties.GetPlayerProperties(playerId)
+for _, property in ipairs(playerProperties) do
+    print(string.format('Jogador %d possui a propriedade %s.', playerId, property.name))
+end
+
+
+---Exemplo de Uso do Sistema de Veículos---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles, Achievements, GlobalEvents, Trade, Auction, Properties, Vehicles = Framework.init()
+
+-- Exemplo: Comprar um veículo
+local playerId = source -- ID do jogador
+local vehicleId = Vehicles.BuyVehicle(playerId, 'adder')
+
+-- Exemplo: Personalizar um veículo
+Vehicles.CustomizeVehicle(vehicleId, { r = 255, g = 0, b = 0 }) -- Cor vermelha
+
+-- Exemplo: Obter os veículos de um jogador
+local playerVehicles = Vehicles.GetPlayerVehicles(playerId)
+for _, vehicle in ipairs(playerVehicles) do
+    print(string.format('Jogador %d possui o veículo %s.', playerId, vehicle.model))
+end

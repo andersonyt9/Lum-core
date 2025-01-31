@@ -60,6 +60,18 @@ local Achievements = require 'core.achievements'
 -- Carrega o sistema de eventos globais
 local GlobalEvents = require 'core.globalevents'
 
+-- Carrega o sistema de comércio
+local Trade = require 'core.trade'
+
+-- Carrega o sistema de leilões
+local Auction = require 'core.auction'
+
+-- Carrega o sistema de propriedades
+local Properties = require 'core.properties'
+
+-- Carrega o sistema de veículos
+local Vehicles = require 'core.vehicles'
+
 -- Função para carregar o módulo do framework
 function Framework.loadModule()
     local frameworkName = Config.Framework
@@ -78,7 +90,7 @@ end
 -- Inicializa o framework
 function Framework.init()
     local module = Framework.loadModule()
-    return module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles, Achievements, GlobalEvents
+    return module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles, Achievements, GlobalEvents, Trade, Auction, Properties, Vehicles
 end
 
 return Framework
