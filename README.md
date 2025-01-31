@@ -428,3 +428,35 @@ local battleId = ClanBattles.StartBattle(clan1Id, clan2Id)
 
 -- Exemplo: Finalizar uma batalha
 ClanBattles.EndBattle(battleId, clan1Id)
+
+---Exemplo de Uso do Sistema de Conquistas---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles, Achievements = Framework.init()
+
+-- Exemplo: Desbloquear uma conquista para um jogador
+local playerId = source -- ID do jogador
+Achievements.UnlockAchievement(playerId, 1)
+
+-- Exemplo: Obter as conquistas desbloqueadas por um jogador
+local achievementsList = Achievements.GetPlayerAchievements(playerId)
+for achievementId, _ in pairs(achievementsList) do
+    print(string.format('Jogador %d desbloqueou a conquista %d.', playerId, achievementId))
+end
+
+---Exemplo de Uso do Sistema de Eventos Globais---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles, Achievements, GlobalEvents = Framework.init()
+
+-- Exemplo: Participar de um evento global
+local playerId = source -- ID do jogador
+GlobalEvents.Participate(playerId, 1)
+
+-- Exemplo: Obter a participação de um jogador nos eventos globais
+local participationList = GlobalEvents.GetPlayerParticipation(playerId)
+for eventId, _ in pairs(participationList) do
+    print(string.format('Jogador %d participou do evento %d.', playerId, eventId))
+end

@@ -54,6 +54,12 @@ local Clans = require 'core.clans'
 -- Carrega o sistema de batalhas entre clãs
 local ClanBattles = require 'core.clanbattles'
 
+-- Carrega o sistema de conquistas
+local Achievements = require 'core.achievements'
+
+-- Carrega o sistema de eventos globais
+local GlobalEvents = require 'core.globalevents'
+
 -- Função para carregar o módulo do framework
 function Framework.loadModule()
     local frameworkName = Config.Framework
@@ -72,7 +78,7 @@ end
 -- Inicializa o framework
 function Framework.init()
     local module = Framework.loadModule()
-    return module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles
+    return module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles, Achievements, GlobalEvents
 end
 
 return Framework
