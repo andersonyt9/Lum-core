@@ -5,7 +5,7 @@ local Framework = require 'core/framework'
 local module = Framework.init()
 
 -- Exemplo de uso
-AddEventHandler('myFramework:getInventory', function(playerId)
+AddEventHandler('Lum-core:getInventory', function(playerId)
     local inventory = module.GetPlayerInventory(playerId)
     if inventory then
         print(('Inventário do jogador %d: %s'):format(playerId, json.encode(inventory)))
@@ -193,8 +193,8 @@ local options = {
 UI.OpenMenu(playerId, 'Escolha um emprego', options)
 
 -- Evento para lidar com a seleção do menu
-RegisterNetEvent('myFramework:MenuSelect')
-AddEventHandler('myFramework:MenuSelect', function(playerId, selectedValue)
+RegisterNetEvent('Lum-core:MenuSelect')
+AddEventHandler('Lum-core:MenuSelect', function(playerId, selectedValue)
     local success = module.SetPlayerJob(playerId, selectedValue, 1)
     if success then
         Logs.Write('INFO', string.format('Jogador %d mudou de emprego para %s.', playerId, selectedValue))
@@ -228,4 +228,162 @@ if playerInfo then
             Notifications.Send(playerId, 'Falha ao salvar informações.', 'error')
         end
     end)
+end
+
+
+---Exemplo de Uso do Sistema de Economia---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy = Framework.init()
+
+-- Exemplo: Depositar dinheiro no banco
+local playerId = source -- ID do jogador
+local amount = 1000 -- Quantidade a depositar
+
+local success = Economy.DepositToBank(playerId, amount)
+if success then
+    Logs.Write('INFO', string.format('Jogador %d depositou %d no banco.', playerId, amount))
+    Notifications.Send(playerId, string.format('Depósito de %d realizado com sucesso!', amount), 'success')
+else
+    Logs.Write('ERROR', string.format('Falha ao depositar %d no banco do jogador %d.', amount, playerId))
+    Notifications.Send(playerId, 'Falha ao realizar o depósito.', 'error')
+end
+
+
+---Exemplo de Uso do Sistema de Inventário---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory = Framework.init()
+
+-- Exemplo: Adicionar um item ao inventário de um jogador
+local playerId = source -- ID do jogador
+local item = 'bread' -- Item a adicionar
+local amount = 1 -- Quantidade a adicionar
+
+local success = Inventory.AddItem(playerId, item, amount)
+if success then
+    Logs.Write('INFO', string.format('Jogador %d recebeu %d %s.', playerId, amount, item))
+    Notifications.Send(playerId, string.format('Você recebeu %d %s.', amount, item), 'success')
+else
+    Logs.Write('ERROR', string.format('Falha ao adicionar %d %s ao inventário do jogador %d.', amount, item, playerId))
+    Notifications.Send(playerId, 'Falha ao adicionar item.', 'error')
+end
+
+---Exemplo de Uso do Sistema de Missões---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions = Framework.init()
+
+-- Exemplo: Adicionar uma missão
+Missions.AddMission('coletar_pacotes', {
+    title = 'Coletar Pacotes',
+    description = 'Colete 5 pacotes espalhados pela cidade.',
+    objectives = {
+        { type = 'collect', item = 'package', amount = 5 }
+    },
+    reward = {
+        money = 1000,
+        items = {
+            { item = 'bread', amount = 2 }
+        }
+    }
+})
+
+-- Exemplo: Iniciar uma missão para um jogador
+local playerId = source -- ID do jogador
+Missions.StartMission(playerId, 'coletar_pacotes')
+
+-- Evento para completar a missão
+RegisterNetEvent('Lum-core:CompleteMission')
+AddEventHandler('Lum-core:CompleteMission', function(playerId, missionId)
+    Missions.CompleteMission(playerId, missionId)
+end)
+
+---Exemplo de Uso do Sistema de Loja---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop = Framework.init()
+
+-- Exemplo: Adicionar um item à loja
+Shop.AddItem('bread', {
+    item = 'bread',
+    amount = 1,
+    price = 50
+})
+
+-- Exemplo: Comprar um item
+local playerId = source -- ID do jogador
+Shop.BuyItem(playerId, 'bread')
+
+
+---Exemplo de Uso do Sistema de Níveis---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels = Framework.init()
+
+-- Exemplo: Adicionar experiência a um jogador
+local playerId = source -- ID do jogador
+Levels.AddExperience(playerId, 500)
+
+-- Exemplo: Obter o nível e experiência de um jogador
+local level, experience = Levels.GetPlayerLevel(playerId)
+print(string.format('Jogador %d está no nível %d com %d de experiência.', playerId, level, experience))
+
+
+---Exemplo de Uso do Sistema de Recompensas Diárias---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards = Framework.init()
+
+-- Exemplo: Dar recompensa diária a um jogador
+local playerId = source -- ID do jogador
+DailyRewards.GiveDailyReward(playerId)
+
+---Exemplo de Uso do Sistema de Amizades---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends = Framework.init()
+
+-- Exemplo: Adicionar um amigo
+local playerId = source -- ID do jogador
+local friendId = 2 -- ID do amigo
+Friends.AddFriend(playerId, friendId)
+
+-- Exemplo: Remover um amigo
+Friends.RemoveFriend(playerId, friendId)
+
+-- Exemplo: Obter a lista de amigos de um jogador
+local friendsList = Friends.GetFriends(playerId)
+for _, friendId in ipairs(friendsList) do
+    print(string.format('Jogador %d é amigo do jogador %d.', playerId, friendId))
+end
+
+---Exemplo de Uso do Sistema de Grupos---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups = Framework.init()
+
+-- Exemplo: Criar um grupo
+local playerId = source -- ID do jogador
+local groupId = Groups.CreateGroup(playerId, 'Meu Grupo')
+
+-- Exemplo: Adicionar um membro ao grupo
+local memberId = 2 -- ID do membro
+Groups.AddMember(groupId, memberId)
+
+-- Exemplo: Remover um membro do grupo
+Groups.RemoveMember(groupId, memberId)
+
+-- Exemplo: Obter os membros de um grupo
+local membersList = Groups.GetMembers(groupId)
+for _, memberId in ipairs(membersList) do
+    print(string.format('Membro %d está no grupo %d.', memberId, groupId))
 end

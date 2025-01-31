@@ -24,6 +24,30 @@ local UI = require 'core.ui'
 -- Carrega o sistema de banco de dados
 local Database = require 'core.database'
 
+-- Carrega o sistema de economia
+local Economy = require 'core.economy'
+
+-- Carrega o sistema de inventário
+local Inventory = require 'core.inventory'
+
+-- Carrega o sistema de missões
+local Missions = require 'core.missions'
+
+-- Carrega o sistema de loja
+local Shop = require 'core.shop'
+
+-- Carrega o sistema de níveis
+local Levels = require 'core.levels'
+
+-- Carrega o sistema de recompensas diárias
+local DailyRewards = require 'core.dailyrewards'
+
+-- Carrega o sistema de amizades
+local Friends = require 'core.friends'
+
+-- Carrega o sistema de grupos
+local Groups = require 'core.groups'
+
 -- Função para carregar o módulo do framework
 function Framework.loadModule()
     local frameworkName = Config.Framework
@@ -42,7 +66,7 @@ end
 -- Inicializa o framework
 function Framework.init()
     local module = Framework.loadModule()
-    return module, Events, Logs, Permissions, Commands, Notifications, UI, Database
+    return module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups
 end
 
 return Framework
