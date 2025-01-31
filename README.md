@@ -387,3 +387,44 @@ local membersList = Groups.GetMembers(groupId)
 for _, memberId in ipairs(membersList) do
     print(string.format('Membro %d está no grupo %d.', memberId, groupId))
 end
+
+
+---Exemplo de Uso do Sistema de Clãs---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans = Framework.init()
+
+-- Exemplo: Criar um clã
+local playerId = source -- ID do jogador
+local clanId = Clans.CreateClan(playerId, 'Meu Clã')
+
+-- Exemplo: Adicionar um membro ao clã
+local memberId = 2 -- ID do membro
+Clans.AddMember(clanId, memberId)
+
+-- Exemplo: Remover um membro do clã
+Clans.RemoveMember(clanId, memberId)
+
+-- Exemplo: Obter os membros de um clã
+local membersList = Clans.GetMembers(clanId)
+for _, memberId in ipairs(membersList) do
+    print(string.format('Membro %d está no clã %d.', memberId, clanId))
+end
+
+-- Exemplo: Adicionar pontos a um clã
+Clans.AddPoints(clanId, 100)
+
+---Exemplo de Uso do Sistema de Batalhas entre Clãs---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles = Framework.init()
+
+-- Exemplo: Iniciar uma batalha entre clãs
+local clan1Id = 1 -- ID do primeiro clã
+local clan2Id = 2 -- ID do segundo clã
+local battleId = ClanBattles.StartBattle(clan1Id, clan2Id)
+
+-- Exemplo: Finalizar uma batalha
+ClanBattles.EndBattle(battleId, clan1Id)

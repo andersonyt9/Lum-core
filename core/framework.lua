@@ -48,6 +48,12 @@ local Friends = require 'core.friends'
 -- Carrega o sistema de grupos
 local Groups = require 'core.groups'
 
+-- Carrega o sistema de clãs
+local Clans = require 'core.clans'
+
+-- Carrega o sistema de batalhas entre clãs
+local ClanBattles = require 'core.clanbattles'
+
 -- Função para carregar o módulo do framework
 function Framework.loadModule()
     local frameworkName = Config.Framework
@@ -66,7 +72,7 @@ end
 -- Inicializa o framework
 function Framework.init()
     local module = Framework.loadModule()
-    return module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups
+    return module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles
 end
 
 return Framework
