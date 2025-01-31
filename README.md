@@ -539,3 +539,36 @@ local playerVehicles = Vehicles.GetPlayerVehicles(playerId)
 for _, vehicle in ipairs(playerVehicles) do
     print(string.format('Jogador %d possui o veículo %s.', playerId, vehicle.model))
 end
+
+---Exemplo de Uso com Webhooks---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles, Achievements, GlobalEvents, Trade, Auction, Properties, Vehicles = Framework.init()
+
+-- Exemplo: Adicionar dinheiro a um jogador
+local playerId = source -- ID do jogador
+Economy.AddMoney(playerId, 1000) -- Isso enviará um log para o webhook de economia
+
+-- Exemplo: Adicionar um item ao inventário de um jogador
+Inventory.AddItem(playerId, 'bread', 2) -- Isso enviará um log para o webhook de inventário
+
+
+---Exemplo de Uso com Outras Frameworks---
+
+-- Carrega o framework
+local Framework = require 'core/framework'
+local module = Framework.init()
+
+-- Exemplo: Obter informações do jogador
+local playerId = source -- ID do jogador
+local playerInfo = module.GetPlayerInfo(playerId)
+print(string.format('Nome do jogador: %s', playerInfo.name))
+
+-- Exemplo: Adicionar dinheiro a um jogador
+local success = module.AddMoney(playerId, 1000)
+if success then
+    print('Dinheiro adicionado com sucesso!')
+else
+    print('Falha ao adicionar dinheiro.')
+end

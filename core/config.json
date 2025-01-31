@@ -1,0 +1,20 @@
+{
+    "framework": "esx",
+    "webhooks": {
+        "logs": "https://discord.com/api/webhooks/SEU_WEBHOOK_LOGS",
+        "economy": "https://discord.com/api/webhooks/SEU_WEBHOOK_ECONOMY",
+        "inventory": "https://discord.com/api/webhooks/SEU_WEBHOOK_INVENTORY"
+    },
+    "permissions": {
+        "admin": {
+            "addMoney": true,
+            "removeMoney": true,
+            "setJob": true
+        },
+        "user": {
+            "addMoney": false,
+            "removeMoney": false,
+            "setJob": false
+        }
+    }
+}
