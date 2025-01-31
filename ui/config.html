@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Configuração do Framework</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            background-color: #333;
+            border: 1px solid #555;
+            color: #fff;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Configuração do Framework</h1>
+        <div class="form-group">
+            <label for="framework">Framework:</label>
+            <select id="framework">
+                <option value="esx">ESX</option>
+                <option value="vrp">vRP</option>
+                <option value="qbcore">QBCore</option>
+                <option value="standalone">Standalone</option>
+                <option value="custom">Custom</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="logsWebhook">Webhook de Logs:</label>
+            <input type="text" id="logsWebhook" placeholder="https://discord.com/api/webhooks/...">
+        </div>
+        <button id="saveButton">Salvar Configuração</button>
+    </div>
+
+    <script>
+        document.getElementById('saveButton').addEventListener('click', function() {
+            const framework = document.getElementById('framework').value;
+            const logsWebhook = document.getElementById('logsWebhook').value;
+
+            fetch(`https://${GetParentResourceName()}/saveConfig`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                },
+                body: JSON.stringify({
+                    framework: framework,
+                    webhooks: {
+                        logs: logsWebhook
+                    }
+                })
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      alert('Configuração salva com sucesso!');
+                  } else {
+                      alert('Erro ao salvar configuração: ' + data.error);
+                  }
+              });
+        });
+    </script>
+</body>
+</html>

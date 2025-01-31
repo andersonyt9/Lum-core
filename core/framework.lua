@@ -72,9 +72,25 @@ local Properties = require 'core.properties'
 -- Carrega o sistema de veículos
 local Vehicles = require 'core.vehicles'
 
+-- Carrega o sistema de plugins
+local Plugins = require 'core.plugins'
+
+-- Função para detectar a framework em uso
+function Framework.DetectFramework()
+    if GetResourceState('es_extended') == 'started' then
+        return 'esx'
+    elseif GetResourceState('vrp') == 'started' then
+        return 'vrp'
+    elseif GetResourceState('qb-core') == 'started' then
+        return 'qbcore'
+    else
+        return 'standalone'
+    end
+end
+
 -- Função para carregar o módulo do framework
 function Framework.loadModule()
-    local frameworkName = Config.Framework
+    local frameworkName = Config.data.framework or Framework.DetectFramework()
     local modulePath = 'modules/' .. frameworkName .. '/' .. frameworkName .. '.lua'
 
     -- Verifica se o módulo existe
@@ -90,6 +106,11 @@ end
 -- Inicializa o framework
 function Framework.init()
     local module = Framework.loadModule()
+
+    -- Carrega os plugins
+    Plugins.Load('money') -- Exemplo: Carrega o plugin de dinheiro
+    Plugins.Init()
+
     return module, Events, Logs, Permissions, Commands, Notifications, UI, Database, Economy, Inventory, Missions, Shop, Levels, DailyRewards, Friends, Groups, Clans, ClanBattles, Achievements, GlobalEvents, Trade, Auction, Properties, Vehicles
 end
 
