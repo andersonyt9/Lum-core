@@ -1,32 +1,32 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'andersonyt99'
-description 'Lum Core - Um framework universal para FiveM'
+name 'Lum Core'
+author 'andersonyt99' --Discord
 version '1.0.0'
 
-client_scripts {
-    'client/cl_utils.lua',
-    'client/cl_framework_detection.lua',
-    'client/cl_main.lua',
-    'client/cl_ui.lua'
+shared_scripts {
+    'config/frameworks.lua',
+    'config/webhooks.lua',
+    'config/languages.lua',
+    'config/settings.lua'
 }
 
 server_scripts {
-    'server/sv_framework_detection.lua',
-    'server/sv_main.lua',
-    'server/sv_logs.lua',
-    'server/sv_config.lua'
+    '@oxmysql/lib/MySQL.lua', -- Importante para oxmysql
+    'core/systems/log_manager.lua',
+    'core/systems/language_manager.lua',
+    'core/systems/database.lua',
+    'utils/functions.lua',
+    'utils/events.lua',
+    'core/integrations/vrp/creative_v5.lua', -- Adaptador do vRP Creative v5
+    'core/integrations/esx/esx.lua', -- Adaptador do ESX
+    'core/integrations/qbcore/qbcore.lua', -- Adaptador do QBCore
+    'core/integrations/qbox/qbox.lua' -- Adaptador do QBox
 }
 
-shared_scripts {
-    'config/config.lua'
-}
-
-ui_page 'ui/ui.html'
-
-files {
-    'ui/ui.html',
-    'ui/ui.css',
-    'ui/ui.js'
+-- Dependências opcionais (ajuste conforme necessário)
+dependencies {
+    'oxmysql',
+    'vrp' -- Se usar vRP Creative v5
 }
